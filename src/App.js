@@ -1,22 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+
+const date = () => {
+  return new Date();
+};
+
+const Clock = () => {
+  const [time, setTime] = useState(date());
+  const refreshClock = () => setTime(date());
+  const sec = time.getSeconds();
+  const min = time.getMinutes();
+  const hrs = time.getHours();
+
+  useEffect(() => {
+    const intID = setInterval(() => {
+      refreshClock();
+    }, 1000);
+
+    return () => {
+      clearInterval(intID);
+    };
+  }, []);
+
+  return (
+    <div className={"clock"}>
+      <div className={"analog-clock"}>
+        <div
+          className={"dial seconds"}
+          style={{ transform: `rotate(${sec * 6}deg)` }}
+        />
+        <div
+          className={"dial minutes"}
+          style={{ transform: `rotate(${min * 6}deg)` }}
+        />
+        <div
+          className={"dial hours"}
+          style={{ transform: `rotate(${hrs * 30}deg)` }}
+        />
+      </div>
+    </div>
+  );
+};
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Clock />
       </header>
     </div>
   );
